@@ -6,6 +6,21 @@
 <title>You Are Loved</title>
 
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+
+.handwritten {
+    font-family: 'Caveat', cursive;
+    font-size: 2em;
+    margin-top: 20px;
+    color: #fbbf24;
+    opacity: 0;
+    border-right: 2px solid #fbbf24;
+    white-space: nowrap;
+    overflow: hidden;
+}
+    
+    
 * {
     margin: 0;
     padding: 0;
@@ -113,6 +128,18 @@ button:hover {
 
 .hidden { display: none; }
 
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+
+.handwritten {
+    font-family: 'Caveat', cursive;
+    font-size: 2em;
+    margin-top: 20px;
+    color: #fbbf24;
+    opacity: 0;
+    border-right: 2px solid #fbbf24;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 </head>
 
@@ -146,18 +173,204 @@ button:hover {
 let currentIndex = 0;
 
 const languages = [
-    "English: I love you",
-    "Spanish: Te amo",
-    "French: Je t'aime",
-    "German: Ich liebe dich",
-    "Italian: Ti amo",
-    "Portuguese: Eu te amo",
-    "Russian: Я тебя люблю",
-    "Japanese: 愛してる",
-    "Chinese: 我爱你",
-    "Arabic: أنا أحبك"
+"English: I love you",
+"Spanish: Te amo",
+"French: Je t'aime",
+"German: Ich liebe dich",
+"Italian: Ti amo",
+"Portuguese: Eu te amo",
+"Russian: Я тебя люблю",
+"Japanese: 愛してる",
+"Chinese: 我爱你",
+"Arabic: أنا أحبك",
+"Korean: 사랑해",
+"Hindi: मैं तुमसे प्यार करता हूँ",
+"Bengali: আমি তোমায় ভালোবাসি",
+"Punjabi: ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ",
+"Urdu: میں تم سے محبت کرتا ہوں",
+"Turkish: Seni seviyorum",
+"Greek: Σ'αγαπώ",
+"Swedish: Jag älskar dig",
+"Norwegian: Jeg elsker deg",
+"Dutch: Ik hou van je",
+"Polish: Kocham cię",
+"Czech: Miluji tě",
+"Hungarian: Szeretlek",
+"Romanian: Te iubesc",
+"Thai: ฉันรักเธอ",
+"Vietnamese: Anh yêu em",
+"Indonesian: Aku cinta kamu",
+"Filipino: Mahal kita",
+"Malay: Saya cinta kamu",
+"Finnish: Rakastan sinua",
+"Danish: Jeg elsker dig",
+"Icelandic: Ég elska þig",
+"Hebrew: אני אוהב אותך",
+"Persian: دوستت دارم",
+"Swahili: Nakupenda",
+"Zulu: Ngiyakuthanda",
+"Afrikaans: Ek het jou lief",
+"Latin: Te amo",
+"Esperanto: Mi amas vin",
+"Hawaiian: Aloha wau iā ʻoe",
+"Maori: Aroha ahau ki a koe",
+"Samoan: Ou te alofa ia te oe",
+"Tongan: 'Ofa atu",
+"Tamil: நான் உன்னை காதலிக்கிறேன்",
+"Telugu: నేను నిన్ను ప్రేమిస్తున్నాను",
+"Kannada: ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ",
+"Malayalam: ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു",
+"Marathi: मी तुझ्यावर प्रेम करतो",
+"Gujarati: હું તને પ્રેમ કરું છું",
+"Nepali: म तिमीलाई माया गर्छु",
+"Sinhala: මම ඔයාට ආදරෙයි",
+"Khmer: ខ្ញុំស្រឡាញ់អ្នក",
+"Lao: ຂ້ອຍຮັກເຈົ້າ",
+"Burmese: ငါမင်းကိုချစ်တယ်",
+"Mongolian: Би чамд хайртай",
+"Kazakh: Мен сені жақсы көремін",
+"Uzbek: Men seni sevaman",
+"Georgian: მე შენ მიყვარხარ",
+"Armenian: Ես քեզ սիրում եմ",
+"Albanian: Të dua",
+"Serbian: Волим те",
+"Croatian: Volim te",
+"Bosnian: Volim te",
+"Slovak: Ľúbim ťa",
+"Slovenian: Ljubim te",
+"Estonian: Ma armastan sind",
+"Latvian: Es tevi mīlu",
+"Lithuanian: Aš tave myliu",
+"Belarusian: Я цябе кахаю",
+"Ukrainian: Я тебе кохаю",
+"Macedonian: Те сакам",
+"Bulgarian: Обичам те",
+"Amharic: እወድሃለሁ",
+"Somali: Waan ku jeclahay",
+"Yoruba: Mo nifẹ rẹ",
+"Igbo: A hụrụ m gị n'anya",
+"Hausa: Ina son ku",
+"Shona: Ndinokuda",
+"Xhosa: Ndiyakuthanda",
+"Malagasy: Tiako ianao",
+"Tajik: Ман туро дӯст медорам",
+"Kyrgyz: Мен сени сүйөм",
+"Pashto: زه تا سره مینه لرم",
+"Farsi: دوستت دارم",
+"Kurdish: Ez te hez dikim",
+"Luxembourgish: Ech hunn dech gär",
+"Basque: Maite zaitut",
+"Catalan: T'estimo",
+"Galician: Quérote",
+"Welsh: Rwy'n dy garu di",
+"Irish: Tá grá agam duit",
+"Scottish Gaelic: Tha gaol agam ort",
+"Breton: Da garout a ran",
+"Corsican: Ti tengu caru",
+"Occitan: T'aimi",
+"Quechua: Kuyayki",
+"Aymara: Munatawa",
+"Guarani: Rohayhu",
+"__FINAL__"
 ];
 
+function showFinalMessage() {
+    const text = document.getElementById('loveText');
+    const button = document.querySelector("#stage3 button");
+
+    button.style.display = "none";
+
+    // soften music
+    audio.volume = 0.2;
+
+    text.classList.add("fade-out");
+
+    setTimeout(() => {
+        text.style.fontSize = "1.2em";
+        text.style.lineHeight = "1.6";
+        text.style.whiteSpace = "pre-line";
+        text.textContent = "";
+
+        text.classList.remove("fade-out");
+        text.classList.add("fade-in");
+
+        typeWriter(text, finalMessage, 0);
+
+        // after message finishes → show name
+        setTimeout(showZuhaName, finalMessage.length * 20 + 800);
+
+    }, 400);
+}
+    
+const finalMessage = `
+
+I love you.
+
+I don’t know why… and I don’t really have reasons.
+It’s just this feeling inside me that keeps wanting to bring you happiness—
+even though it’s not my responsibility.
+
+And maybe I seem a little hesitant…
+but it’s only because this feeling is new to me.
+I’ve never had someone I wanted to hold this close before.
+
+My first crush kind of messed me up.
+Not in some dramatic way—
+just small things, from someone unexpected,
+that quietly made me insecure…
+made me question myself…
+and made me scared to look at someone like that again.
+
+But you…
+
+You were so easy to talk to.
+So warm, so pretty, so welcoming—
+that somehow, I wasn’t anxious.
+It was our first time meeting,
+yet it felt like we had known each other for a long time.
+
+And I think I’ve started realizing
+how little time we really have.
+
+So I don’t want to be scared anymore.
+I don’t want to hesitate.
+I don’t want to keep thinking about the world outside
+and miss what’s right in front of me.
+
+I don’t want to zone out of this moment.
+
+I want to zone out of the world—
+and stay right here.
+
+With you.
+
+Because… it has always been you.
+
+`;
+
+function showZuhaName() {
+    const container = document.querySelector("#stage3");
+
+    const nameEl = document.createElement("div");
+    nameEl.className = "handwritten";
+    container.appendChild(nameEl);
+
+    const message = "…it has always been you, Zuha.";
+
+    let i = 0;
+    nameEl.style.opacity = 1;
+
+    function type() {
+        if (i < message.length) {
+            nameEl.textContent += message.charAt(i);
+            i++;
+            setTimeout(type, 60);
+        }
+    }
+
+    type();
+}
+    
 function nextStage() {
     document.getElementById('stage1').classList.add('hidden');
     document.getElementById('stage2').classList.remove('hidden');
@@ -170,10 +383,27 @@ function showLanguages() {
 }
 
 function nextLanguage() {
-    currentIndex = (currentIndex + 1) % languages.length;
+    currentIndex++;
+
+    if (languages[currentIndex] === "__FINAL__") {
+        showFinalMessage();
+        return;
+    }
+
+    if (currentIndex >= languages.length) {
+        currentIndex = 0;
+    }
+
     updateLanguage();
 }
 
+function typeWriter(element, text, i) {
+    if (i < text.length) {
+        element.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(element, text, i + 1), 20);
+    }
+}
+    
 function updateLanguage() {
     const text = document.getElementById('loveText');
 
@@ -185,6 +415,7 @@ function updateLanguage() {
         text.classList.add('fade-in');
     }, 200);
 }
+
 
 
 /* =========================
