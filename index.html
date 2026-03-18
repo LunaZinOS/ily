@@ -3,122 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You Are Loved</title>
+<title>For You</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    background: radial-gradient(circle at top, #0f172a, #020617);
+    margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    position: relative;
+    background: radial-gradient(circle at top, #0f172a, #020617);
     color: #5eead4;
+    overflow-y: auto;
 }
 
+/* container */
 .container {
+    max-width: 700px;
+    margin: 100px auto;
     text-align: center;
-    background: rgba(15, 23, 42, 0.75);
-    padding: 60px 40px;
-    border-radius: 30px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
+    background: rgba(15,23,42,0.7);
+    padding: 60px;
+    border-radius: 20px;
 }
 
-h1, h2 {
-    text-shadow: 0 0 12px rgba(94, 234, 212, 0.5);
-}
-
-h2 {
-    margin: 30px 0;
-}
-
-button {
-    border: 2px dashed #5eead4;
-    background: none;
+/* text */
+h1,h2 {
     color: #5eead4;
-    padding: 12px 30px;
-    border-radius: 40px;
+    text-shadow: 0 0 10px rgba(94,234,212,0.5);
+}
+
+/* button */
+button {
     margin-top: 20px;
+    padding: 12px 30px;
+    border: 1px solid #5eead4;
+    background: transparent;
+    color: #5eead4;
+    border-radius: 30px;
     cursor: pointer;
 }
-
 button:hover {
-    background: #5eead4;
-    color: #020617;
+    background:#5eead4;
+    color:#020617;
 }
 
-.hidden {
-    display: none;
-}
+/* hidden */
+.hidden { display:none; }
 
 /* handwritten */
 .handwritten {
     font-family: 'Caveat', cursive;
     font-size: 2em;
     margin-top: 20px;
-    opacity: 0;
+    border-right: 2px solid #5eead4;
 }
 
-/* photos */
+/* polaroids */
 #photoWall {
-    margin-top: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    margin-top:40px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
 }
-
 .polaroid {
-    width: 140px;
-    height: 170px;
-    background: white;
-    padding: 10px;
-    border-radius: 6px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    width:140px;
+    background:white;
+    padding:10px;
+    transform:rotate(-3deg);
 }
-
 .polaroid img {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
+    width:100%;
 }
 
-/* playlist */
-#musicSelector {
-    margin-top: 40px;
-}
-
-.music-buttons {
+/* 🎧 SIDE PLAYLIST */
+#musicMenu {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.music-buttons button {
-    border: 1px solid #5eead4;
-    font-size: 1.5em;
+.music-btn {
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    padding: 10px 15px;
+    border: 1px solid #5eead4;
+    background: transparent;
+    color: #5eead4;
+    font-size: 18px;
+    cursor: pointer;
 }
-
+.music-btn:hover {
+    background:#5eead4;
+    color:#020617;
+}
 </style>
 </head>
 
 <body>
+
+<!-- SIDE MUSIC MENU -->
+<div id="musicMenu">
+    <button class="music-btn" onclick="playSong(0)">◉</button>
+    <button class="music-btn" onclick="playSong(1)">✦</button>
+    <button class="music-btn" onclick="playSong(2)">☾</button>
+    <button class="music-btn" onclick="playSong(3)">♡</button>
+    <button class="music-btn" onclick="playSong(4)">∞</button>
+</div>
 
 <div class="container">
 
@@ -133,28 +128,35 @@ button:hover {
 </div>
 
 <div id="stage3" class="hidden">
-    <h2 id="loveText">I love you</h2>
+    <h2 id="loveText"></h2>
     <button onclick="nextLanguage()">IDK Man</button>
 
     <div id="photoWall" class="hidden"></div>
-
-    <div id="musicSelector" class="hidden">
-        <div class="music-buttons">
-            <button onclick="playSong(0)">◉</button>
-            <button onclick="playSong(1)">✦</button>
-            <button onclick="playSong(2)">☾</button>
-            <button onclick="playSong(3)">♡</button>
-            <button onclick="playSong(4)">∞</button>
-        </div>
-    </div>
-
 </div>
 
 </div>
 
 <script>
 
-/* languages */
+/* 🎧 MUSIC */
+const playlist = [
+    "linger.mp3",
+    "fade.mp3",
+    "song3.mp3",
+    "song4.mp3",
+    "song5.mp3"
+];
+
+let audio = new Audio();
+let currentTrack = 0;
+
+function playSong(i){
+    currentTrack = i;
+    audio.src = playlist[i];
+    audio.play().catch(()=>{});
+}
+
+/* 🌍 LANGUAGES */
 let currentIndex = 0;
 
 const languages = [
@@ -168,145 +170,94 @@ const languages = [
 "Japanese: 愛してる",
 "Chinese: 我爱你",
 "Arabic: أنا أحبك",
-"Hindi: मैं तुमसे प्यार करता हूँ",
-"Bengali: আমি তোমায় ভালোবাসি",
-"Punjabi: ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ",
-"Urdu: میں تم سے محبت کرتا ہوں",
-"Turkish: Seni seviyorum",
-"Greek: Σ'αγαπώ",
-"Swedish: Jag älskar dig",
-"Norwegian: Jeg elsker deg",
-"Dutch: Ik hou van je",
-"Polish: Kocham cię",
-"Thai: ฉันรักเธอ",
-"Vietnamese: Anh yêu em",
-"Indonesian: Aku cinta kamu",
-"Filipino: Mahal kita",
-"Malay: Saya cinta kamu",
-"Finnish: Rakastan sinua",
-"Danish: Jeg elsker dig",
-"Hebrew: אני אוהב אותך",
-"Persian: دوستت دارم",
-"Swahili: Nakupenda",
 "__FINAL__"
 ];
 
-const finalMessage = `I love you.
+/* 💔 MESSAGE */
+const finalMessage = `
+I love you.
 
-I don’t know why… and I don’t really have reasons.
-It’s just this feeling inside me that keeps wanting to bring you happiness—
-even though it’s not my responsibility.
+I don’t know why… I just do.
+It’s this feeling that wants to bring you happiness.
 
-And maybe I seem a little hesitant…
-but it’s only because this feeling is new to me.
+And maybe I seem hesitant…
+but it’s only because this is new to me.
 
-You were just… easy.
-Easy to talk to, easy to be around.
+But you…
 
-And I don’t want to miss what’s right in front of me anymore.
+You were so easy to talk to.
+So warm… so real…
+
+I don’t want to miss what’s in front of me anymore.
 
 I want to stay here.
 
 With you.
 `;
 
-function nextStage() {
+/* FLOW */
+function nextStage(){
     stage1.classList.add("hidden");
     stage2.classList.remove("hidden");
 }
 
-function showLanguages() {
+function showLanguages(){
     stage2.classList.add("hidden");
     stage3.classList.remove("hidden");
+    updateLanguage();
 }
 
-function nextLanguage() {
+function nextLanguage(){
     currentIndex++;
-
-    if (languages[currentIndex] === "__FINAL__") {
+    if(languages[currentIndex]==="__FINAL__"){
         showFinalMessage();
         return;
     }
+    updateLanguage();
+}
 
+function updateLanguage(){
     loveText.textContent = languages[currentIndex];
 }
 
-function showFinalMessage() {
-    loveText.textContent = "";
+/* FINAL */
+function showFinalMessage(){
+    const btn = document.querySelector("#stage3 button");
+    btn.style.display="none";
+
+    loveText.textContent="";
     typeWriter(loveText, finalMessage, 0);
 
-    setTimeout(showZuhaName, finalMessage.length * 20 + 500);
+    setTimeout(showZuhaName, finalMessage.length*20+1000);
 }
 
-function typeWriter(el, text, i) {
-    if (i < text.length) {
-        el.textContent += text.charAt(i);
-        setTimeout(() => typeWriter(el, text, i + 1), 20);
+function typeWriter(el, text, i){
+    if(i<text.length){
+        el.textContent+=text.charAt(i);
+        setTimeout(()=>typeWriter(el,text,i+1),20);
     }
 }
 
-function showZuhaName() {
+function showZuhaName(){
     const name = document.createElement("div");
-    name.className = "handwritten";
-    name.style.opacity = 1;
-
+    name.className="handwritten";
+    name.textContent="…it has always been you, Zuha ❤️";
     stage3.appendChild(name);
 
-    const msg = "…it has always been you, Zuha ❤️";
-
-    let i = 0;
-    function type() {
-        if (i < msg.length) {
-            name.textContent += msg[i++];
-            setTimeout(type, 60);
-        }
-    }
-    type();
-
-    setTimeout(() => {
-        showPhotos();
-        musicSelector.classList.remove("hidden");
-    }, 1500);
+    setTimeout(showPhotos,1500);
 }
 
-function showPhotos() {
-    photoWall.classList.remove("hidden");
+/* 📸 PHOTOS */
+function showPhotos(){
+    const wall=document.getElementById("photoWall");
+    wall.classList.remove("hidden");
 
-    const imgs = ["img1.jpg", "img2.jpg"];
-
-    imgs.forEach(src => {
-        const p = document.createElement("div");
-        p.className = "polaroid";
-        p.innerHTML = `<img src="${src}"><div>us :)</div>`;
-        photoWall.appendChild(p);
+    ["img1.jpg","img2.jpg"].forEach(src=>{
+        const div=document.createElement("div");
+        div.className="polaroid";
+        div.innerHTML=`<img src="${src}">`;
+        wall.appendChild(div);
     });
-}
-
-/* music */
-const playlist = [
-"linger.mp3",
-"fade.mp3",
-"song3.mp3",
-"song4.mp3",
-"song5.mp3"
-];
-
-let audio = new Audio();
-
-function playSong(i) {
-    audio.src = playlist[i];
-    audio.play();
-}
-
-/* foxes */
-for (let i = 0; i < 20; i++) {
-    const f = document.createElement("div");
-    f.textContent = "🦊";
-    f.style.position = "absolute";
-    f.style.left = Math.random()*100+"%";
-    f.style.top = Math.random()*100+"%";
-    f.style.opacity = 0.2;
-    document.body.appendChild(f);
 }
 
 </script>
