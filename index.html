@@ -6,21 +6,8 @@
 <title>You Are Loved</title>
 
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 
-.handwritten {
-    font-family: 'Caveat', cursive;
-    font-size: 2em;
-    margin-top: 20px;
-    color: #5eead4;
-    opacity: 0;
-    border-right: 2px solid #5eead4;
-    white-space: nowrap;
-    overflow: hidden;
-}
-    
-    
 * {
     margin: 0;
     padding: 0;
@@ -28,121 +15,106 @@
 }
 
 body {
-    background: radial-gradient(circle at top, #1e293b, #020617);
+    background: radial-gradient(circle at top, #0f172a, #020617);
     font-family: 'Segoe UI', sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-y: auto;
     position: relative;
     color: #5eead4;
 }
 
-/* subtle grain texture */
-body::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url('https://grainy-gradients.vercel.app/noise.svg');
-    opacity: 0.08;
-    pointer-events: none;
-}
-
-/* floating elements */
-.sticker {
-    position: absolute;
-    font-size: 50px;
-    opacity: 0.3;
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-}
-
-/* main container */
 .container {
-    max-height: 90vh;
-overflow-y: auto;
-padding-right: 10px;
     text-align: center;
     background: rgba(15, 23, 42, 0.75);
-    padding: 70px 50px;
+    padding: 60px 40px;
     border-radius: 30px;
     backdrop-filter: blur(12px);
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.05);
     max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-/* hand drawn underline effect */
-.hand {
-    position: relative;
-    display: inline-block;
-}
-
-.hand::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    width: 100%;
-    height: 3px;
-    background: #5eead4;
-    border-radius: 10px;
-    transform: rotate(-1deg);
-}
-
-/* text */
-h1 {
-    font-size: 2.6em;
+h1, h2 {
+    text-shadow: 0 0 12px rgba(94, 234, 212, 0.5);
 }
 
 h2 {
-    font-size: 3em;
-    margin: 40px 0;
-    transition: opacity 0.4s;
+    margin: 30px 0;
 }
 
-/* button */
 button {
-    background: none;
     border: 2px dashed #5eead4;
+    background: none;
     color: #5eead4;
-    padding: 14px 35px;
+    padding: 12px 30px;
     border-radius: 40px;
-    font-size: 1.1em;
-    cursor: pointer;
     margin-top: 20px;
-    transition: all 0.3s;
+    cursor: pointer;
 }
 
 button:hover {
     background: #5eead4;
     color: #020617;
-    transform: scale(1.05);
 }
 
-/* fade */
-.fade-out { opacity: 0; }
-.fade-in { opacity: 1; }
+.hidden {
+    display: none;
+}
 
-.hidden { display: none; }
-
-    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
-
+/* handwritten */
 .handwritten {
     font-family: 'Caveat', cursive;
     font-size: 2em;
     margin-top: 20px;
-    color: #5eead4;
     opacity: 0;
-    border-right: 2px solid #5eead4;
-    white-space: nowrap;
-overflow-y: auto;
 }
+
+/* photos */
+#photoWall {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.polaroid {
+    width: 140px;
+    height: 170px;
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.polaroid img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+/* playlist */
+#musicSelector {
+    margin-top: 40px;
+}
+
+.music-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.music-buttons button {
+    border: 1px solid #5eead4;
+    font-size: 1.5em;
+    border-radius: 50%;
+    padding: 10px 15px;
+}
+
 </style>
 </head>
 
@@ -151,7 +123,7 @@ overflow-y: auto;
 <div class="container">
 
 <div id="stage1">
-    <h1 class="hand">Do you know that you are loved?</h1>
+    <h1>Do you know that you are loved?</h1>
     <button onclick="nextStage()">Hmm Doubtful</button>
 </div>
 
@@ -163,16 +135,26 @@ overflow-y: auto;
 <div id="stage3" class="hidden">
     <h2 id="loveText">I love you</h2>
     <button onclick="nextLanguage()">IDK Man</button>
+
+    <div id="photoWall" class="hidden"></div>
+
+    <div id="musicSelector" class="hidden">
+        <div class="music-buttons">
+            <button onclick="playSong(0)">◉</button>
+            <button onclick="playSong(1)">✦</button>
+            <button onclick="playSong(2)">☾</button>
+            <button onclick="playSong(3)">♡</button>
+            <button onclick="playSong(4)">∞</button>
+        </div>
+    </div>
+
 </div>
 
 </div>
 
 <script>
 
-/* =========================
-   🌍 LANGUAGE SYSTEM
-========================= */
-
+/* languages */
 let currentIndex = 0;
 
 const languages = [
@@ -186,7 +168,6 @@ const languages = [
 "Japanese: 愛してる",
 "Chinese: 我爱你",
 "Arabic: أنا أحبك",
-"Korean: 사랑해",
 "Hindi: मैं तुमसे प्यार करता हूँ",
 "Bengali: আমি তোমায় ভালোবাসি",
 "Punjabi: ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ",
@@ -197,9 +178,6 @@ const languages = [
 "Norwegian: Jeg elsker deg",
 "Dutch: Ik hou van je",
 "Polish: Kocham cię",
-"Czech: Miluji tě",
-"Hungarian: Szeretlek",
-"Romanian: Te iubesc",
 "Thai: ฉันรักเธอ",
 "Vietnamese: Anh yêu em",
 "Indonesian: Aku cinta kamu",
@@ -207,107 +185,13 @@ const languages = [
 "Malay: Saya cinta kamu",
 "Finnish: Rakastan sinua",
 "Danish: Jeg elsker dig",
-"Icelandic: Ég elska þig",
 "Hebrew: אני אוהב אותך",
 "Persian: دوستت دارم",
 "Swahili: Nakupenda",
-"Zulu: Ngiyakuthanda",
-"Afrikaans: Ek het jou lief",
-"Latin: Te amo",
-"Esperanto: Mi amas vin",
-"Hawaiian: Aloha wau iā ʻoe",
-"Maori: Aroha ahau ki a koe",
-"Samoan: Ou te alofa ia te oe",
-"Tongan: 'Ofa atu",
-"Tamil: நான் உன்னை காதலிக்கிறேன்",
-"Telugu: నేను నిన్ను ప్రేమిస్తున్నాను",
-"Kannada: ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ",
-"Malayalam: ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു",
-"Marathi: मी तुझ्यावर प्रेम करतो",
-"Gujarati: હું તને પ્રેમ કરું છું",
-"Nepali: म तिमीलाई माया गर्छु",
-"Sinhala: මම ඔයාට ආදරෙයි",
-"Khmer: ខ្ញុំស្រឡាញ់អ្នក",
-"Lao: ຂ້ອຍຮັກເຈົ້າ",
-"Burmese: ငါမင်းကိုချစ်တယ်",
-"Mongolian: Би чамд хайртай",
-"Kazakh: Мен сені жақсы көремін",
-"Uzbek: Men seni sevaman",
-"Georgian: მე შენ მიყვარხარ",
-"Armenian: Ես քեզ սիրում եմ",
-"Albanian: Të dua",
-"Serbian: Волим те",
-"Croatian: Volim te",
-"Bosnian: Volim te",
-"Slovak: Ľúbim ťa",
-"Slovenian: Ljubim te",
-"Estonian: Ma armastan sind",
-"Latvian: Es tevi mīlu",
-"Lithuanian: Aš tave myliu",
-"Belarusian: Я цябе кахаю",
-"Ukrainian: Я тебе кохаю",
-"Macedonian: Те сакам",
-"Bulgarian: Обичам те",
-"Amharic: እወድሃለሁ",
-"Somali: Waan ku jeclahay",
-"Yoruba: Mo nifẹ rẹ",
-"Igbo: A hụrụ m gị n'anya",
-"Hausa: Ina son ku",
-"Shona: Ndinokuda",
-"Xhosa: Ndiyakuthanda",
-"Malagasy: Tiako ianao",
-"Tajik: Ман туро дӯст медорам",
-"Kyrgyz: Мен сени сүйөм",
-"Pashto: زه تا سره مینه لرم",
-"Farsi: دوستت دارم",
-"Kurdish: Ez te hez dikim",
-"Luxembourgish: Ech hunn dech gär",
-"Basque: Maite zaitut",
-"Catalan: T'estimo",
-"Galician: Quérote",
-"Welsh: Rwy'n dy garu di",
-"Irish: Tá grá agam duit",
-"Scottish Gaelic: Tha gaol agam ort",
-"Breton: Da garout a ran",
-"Corsican: Ti tengu caru",
-"Occitan: T'aimi",
-"Quechua: Kuyayki",
-"Aymara: Munatawa",
-"Guarani: Rohayhu",
 "__FINAL__"
 ];
 
-function showFinalMessage() {
-    const text = document.getElementById('loveText');
-    const button = document.querySelector("#stage3 button");
-
-    button.style.display = "none";
-
-    // soften music
-    audio.volume = 0.2;
-
-    text.classList.add("fade-out");
-
-    setTimeout(() => {
-        text.style.fontSize = "1.2em";
-        text.style.lineHeight = "1.6";
-        text.style.whiteSpace = "pre-line";
-        text.textContent = "";
-
-        text.classList.remove("fade-out");
-        text.classList.add("fade-in");
-
-        typeWriter(text, finalMessage, 0);
-
-        // after message finishes → show name
-        setTimeout(showZuhaName, finalMessage.length * 20 + 800);
-
-    }, 400);
-}
-    
-const finalMessage = `
-
-I love you.
+const finalMessage = `I love you.
 
 I don’t know why… and I don’t really have reasons.
 It’s just this feeling inside me that keeps wanting to bring you happiness—
@@ -315,74 +199,25 @@ even though it’s not my responsibility.
 
 And maybe I seem a little hesitant…
 but it’s only because this feeling is new to me.
-I’ve never had someone I wanted to hold this close before.
 
-My first crush kind of messed me up.
-Not in some dramatic way—
-just small things, from someone unexpected,
-that quietly made me insecure…
-made me question myself…
-and made me scared to look at someone like that again.
+You were just… easy.
+Easy to talk to, easy to be around.
 
-But you…
+And I don’t want to miss what’s right in front of me anymore.
 
-You were so easy to talk to.
-So warm, so pretty, so welcoming—
-that somehow, I wasn’t anxious.
-It was our first time meeting,
-yet it felt like we had known each other for a long time.
-
-And I think I’ve started realizing
-how little time we really have.
-
-So I don’t want to be scared anymore.
-I don’t want to hesitate.
-I don’t want to keep thinking about the world outside
-and miss what’s right in front of me.
-
-I don’t want to zone out of this moment.
-
-I want to zone out of the world—
-and stay right here.
+I want to stay here.
 
 With you.
-
-Because… it has always been you.
-
 `;
 
-function showZuhaName() {
-    const container = document.querySelector("#stage3");
-
-    const nameEl = document.createElement("div");
-    nameEl.className = "handwritten";
-    container.appendChild(nameEl);
-
-    const message = "…it has always been you, Zuha.";
-
-    let i = 0;
-    nameEl.style.opacity = 1;
-
-    function type() {
-        if (i < message.length) {
-            nameEl.textContent += message.charAt(i);
-            i++;
-            setTimeout(type, 60);
-        }
-    }
-
-    type();
-}
-    
 function nextStage() {
-    document.getElementById('stage1').classList.add('hidden');
-    document.getElementById('stage2').classList.remove('hidden');
+    stage1.classList.add("hidden");
+    stage2.classList.remove("hidden");
 }
 
 function showLanguages() {
-    document.getElementById('stage2').classList.add('hidden');
-    document.getElementById('stage3').classList.remove('hidden');
-    updateLanguage();
+    stage2.classList.add("hidden");
+    stage3.classList.remove("hidden");
 }
 
 function nextLanguage() {
@@ -393,85 +228,85 @@ function nextLanguage() {
         return;
     }
 
-    if (currentIndex >= languages.length) {
-        currentIndex = 0;
-    }
-
-    updateLanguage();
+    loveText.textContent = languages[currentIndex];
 }
 
-function typeWriter(element, text, i) {
+function showFinalMessage() {
+    loveText.textContent = "";
+    typeWriter(loveText, finalMessage, 0);
+
+    setTimeout(showZuhaName, finalMessage.length * 20 + 500);
+}
+
+function typeWriter(el, text, i) {
     if (i < text.length) {
-        element.textContent += text.charAt(i);
-        setTimeout(() => typeWriter(element, text, i + 1), 20);
+        el.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(el, text, i + 1), 20);
     }
 }
-    
-function updateLanguage() {
-    const text = document.getElementById('loveText');
 
-    text.classList.add('fade-out');
+function showZuhaName() {
+    const name = document.createElement("div");
+    name.className = "handwritten";
+    name.style.opacity = 1;
+
+    stage3.appendChild(name);
+
+    const msg = "…it has always been you, Zuha ❤️";
+
+    let i = 0;
+    function type() {
+        if (i < msg.length) {
+            name.textContent += msg[i++];
+            setTimeout(type, 60);
+        }
+    }
+    type();
 
     setTimeout(() => {
-        text.textContent = languages[currentIndex];
-        text.classList.remove('fade-out');
-        text.classList.add('fade-in');
-    }, 200);
+        showPhotos();
+        musicSelector.classList.remove("hidden");
+    }, 1500);
 }
 
+function showPhotos() {
+    photoWall.classList.remove("hidden");
 
+    const imgs = ["img1.jpg", "img2.jpg"];
 
-/* =========================
-   🎧 MUSIC SYSTEM (PLAYLIST)
-========================= */
+    imgs.forEach(src => {
+        const p = document.createElement("div");
+        p.className = "polaroid";
+        p.innerHTML = `<img src="${src}"><div>us :)</div>`;
+        photoWall.appendChild(p);
+    });
+}
 
+/* music */
 const playlist = [
-    "song1.mp3", // Linger
-    "song2.mp3", // Fade Into You
-    "song3.mp3",
-    "song4.mp3",
-    "song5.mp3",
-    "song6.mp3",
-    "song7.mp3",
-    "song8.mp3",
-    "song9.mp3",
-    "song10.mp3"
+"linger.mp3",
+"fade.mp3",
+"song3.mp3",
+"song4.mp3",
+"song5.mp3"
 ];
 
-let currentTrack = 0;
 let audio = new Audio();
-audio.volume = 0.6;
 
-function playTrack(index) {
-    audio.src = playlist[index];
-    audio.play().catch(() => {});
+function playSong(i) {
+    audio.src = playlist[i];
+    audio.play();
 }
 
-audio.addEventListener("ended", () => {
-    currentTrack = (currentTrack + 1) % playlist.length;
-    playTrack(currentTrack);
-});
-
-/* start music on first interaction (browser rule) */
-document.body.addEventListener("click", () => {
-    if (audio.paused) {
-        playTrack(currentTrack);
-    }
-}, { once: true });
-
-
-/* =========================
-   🦊 FLOATING ELEMENTS
-========================= */
-
-for (let i = 0; i < 12; i++) {
-    const el = document.createElement("div");
-    el.className = "sticker";
-    el.textContent = Math.random() > 0.5 ? "🦊" : "🐱";
-    el.style.left = Math.random() * 100 + "%";
-    el.style.top = Math.random() * 100 + "%";
-    el.style.animationDelay = Math.random() * 2 + "s";
-    document.body.appendChild(el);
+/* foxes */
+for (let i = 0; i < 20; i++) {
+    const f = document.createElement("div");
+    f.textContent = "🦊";
+    f.style.position = "absolute";
+    f.style.left = Math.random()*100+"%";
+    f.style.top = Math.random()*100+"%";
+    f.style.opacity = 0.2;
+    document.body.appendChild(f);
 }
 
 </script>
