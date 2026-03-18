@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Are Loved</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(circle at top, #1e293b, #020617);
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    color: #fbbf24;
+}
+
+/* subtle grain texture */
+body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+/* floating elements */
+.sticker {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0.3;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* main container */
+.container {
+    text-align: center;
+    background: rgba(15, 23, 42, 0.75);
+    padding: 70px 50px;
+    border-radius: 30px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.05);
+    max-width: 600px;
+}
+
+/* hand drawn underline effect */
+.hand {
+    position: relative;
+    display: inline-block;
+}
+
+.hand::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 3px;
+    background: #fbbf24;
+    border-radius: 10px;
+    transform: rotate(-1deg);
+}
+
+/* text */
+h1 {
+    font-size: 2.6em;
+}
+
+h2 {
+    font-size: 3em;
+    margin: 40px 0;
+    transition: opacity 0.4s;
+}
+
+/* button */
+button {
+    background: none;
+    border: 2px dashed #fbbf24;
+    color: #fbbf24;
+    padding: 14px 35px;
+    border-radius: 40px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: #fbbf24;
+    color: #020617;
+    transform: scale(1.05);
+}
+
+/* fade */
+.fade-out { opacity: 0; }
+.fade-in { opacity: 1; }
+
+.hidden { display: none; }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="stage1">
+    <h1 class="hand">Do you know that you are loved?</h1>
+    <button onclick="nextStage()">Hmm Doubtful</button>
+</div>
+
+<div id="stage2" class="hidden">
+    <h2>I LOVE YOU ❤️</h2>
+    <button onclick="showLanguages()">IDK Man</button>
+</div>
+
+<div id="stage3" class="hidden">
+    <h2 id="loveText">I love you</h2>
+    <button onclick="nextLanguage()">IDK Man</button>
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   🌍 LANGUAGE SYSTEM
+========================= */
+
+let currentIndex = 0;
+
+const languages = [
+    "English: I love you",
+    "Spanish: Te amo",
+    "French: Je t'aime",
+    "German: Ich liebe dich",
+    "Italian: Ti amo",
+    "Portuguese: Eu te amo",
+    "Russian: Я тебя люблю",
+    "Japanese: 愛してる",
+    "Chinese: 我爱你",
+    "Arabic: أنا أحبك"
+];
+
+function nextStage() {
+    document.getElementById('stage1').classList.add('hidden');
+    document.getElementById('stage2').classList.remove('hidden');
+}
+
+function showLanguages() {
+    document.getElementById('stage2').classList.add('hidden');
+    document.getElementById('stage3').classList.remove('hidden');
+    updateLanguage();
+}
+
+function nextLanguage() {
+    currentIndex = (currentIndex + 1) % languages.length;
+    updateLanguage();
+}
+
+function updateLanguage() {
+    const text = document.getElementById('loveText');
+
+    text.classList.add('fade-out');
+
+    setTimeout(() => {
+        text.textContent = languages[currentIndex];
+        text.classList.remove('fade-out');
+        text.classList.add('fade-in');
+    }, 200);
+}
+
+
+/* =========================
+   🎧 MUSIC SYSTEM (PLAYLIST)
+========================= */
+
+const playlist = [
+    "song1.mp3", // Linger
+    "song2.mp3", // Fade Into You
+    "song3.mp3",
+    "song4.mp3",
+    "song5.mp3",
+    "song6.mp3",
+    "song7.mp3",
+    "song8.mp3",
+    "song9.mp3",
+    "song10.mp3"
+];
+
+let currentTrack = 0;
+let audio = new Audio();
+audio.volume = 0.6;
+
+function playTrack(index) {
+    audio.src = playlist[index];
+    audio.play().catch(() => {});
+}
+
+audio.addEventListener("ended", () => {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    playTrack(currentTrack);
+});
+
+/* start music on first interaction (browser rule) */
+document.body.addEventListener("click", () => {
+    if (audio.paused) {
+        playTrack(currentTrack);
+    }
+}, { once: true });
+
+
+/* =========================
+   🦊 FLOATING ELEMENTS
+========================= */
+
+for (let i = 0; i < 12; i++) {
+    const el = document.createElement("div");
+    el.className = "sticker";
+    el.textContent = Math.random() > 0.5 ? "🦊" : "🐱";
+    el.style.left = Math.random() * 100 + "%";
+    el.style.top = Math.random() * 100 + "%";
+    el.style.animationDelay = Math.random() * 2 + "s";
+    document.body.appendChild(el);
+}
+
+</script>
+
+</body>
+</html>
